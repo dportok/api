@@ -1,0 +1,6 @@
+#!/bin/bash
+LOGFILE="/var/log/pull_and_sync"
+TIMESTAMP=$(date "+%Y-%m-%d %H:%M:%S" | cut -d ' ' -f1)
+cd {{ local_repo_path }}
+git pull {{ remote_repository }}  > "${LOGFILE}-${TIMESTAMP}".log 2>&1
+aws s3 sync . {{ s3_bucket }} >> "${LOGFILE}-${TIMESTAMP}".log 2>&1

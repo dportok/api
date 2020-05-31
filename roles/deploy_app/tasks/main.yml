@@ -1,0 +1,24 @@
+---
+- name: Create the service directory
+  copy:
+    src: "{{ role_path }}/files/app"
+    dest: /opt
+    mode: 06440
+
+- name: Build the docker image for the application
+  docker_image:
+    build:
+      path: "{{ app_path }}"
+    name: app_query_service
+    state: present
+
+- name: Populate docker-compose file
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ app_path }}/docker-compose.yml"
+    mode: 0664
+
+- name: Run docker-compose
+  docker_compose:
+    project_src: "{{ app_path }}"
+    state: present

@@ -1,0 +1,25 @@
+---
+- name: Create aws directory
+  file:
+      path: "{{ aws_dir_path }}"
+      owner: root
+      group: root
+      mode: 0755
+      state: directory
+
+- name: Configure AWS configuration file
+  template:
+    src: "aws_config.j2"
+    dest: "{{ aws_dir_path }}/config"
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Configure AWS credentials
+  template:
+    src: "aws_creds.j2"
+    dest: "{{ aws_dir_path }}/credentials"
+    owner: root
+    group: root
+    mode: 0600
+

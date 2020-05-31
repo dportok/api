@@ -1,0 +1,5 @@
+---
+remote_repository: "https://github.com/CSSEGISandData/COVID-19/"
+local_repo_path: "/data/localrepo"
+script_path: "/opt/pull_and_sync.sh"
+s3_bucket: "s3://test-dportok1"

@@ -1,0 +1,8 @@
+packages:
+  - awscli
+  - bzip2
+  - git
+  - python2-pip
+  - python-setuptools
+  - vim
+  - yum-utils

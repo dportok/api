@@ -1,0 +1,26 @@
+---
+- include_tasks: CentOS.yml
+  when: ansible_os_family == 'RedHat'
+
+- name: Install dependent python modules
+  pip:
+    name: "{{ item.name }}"
+    version: "{{ item.version }}"
+    state: present
+    executable: /bin/pip
+  with_items:
+  - { name: docker-compose, version: 1.9.0 }
+
+- name: Install Docker
+  package:
+    name: "{{ docker_package }}"
+    state: "{{ docker_package_state }}"
+
+- name: Ensure Docker is started and enabled at boot
+  service:
+    name: docker
+    state: "{{ docker_service_state }}"
+    enabled: "{{ docker_service_enabled }}"
+
+- include_tasks: docker-compose.yml
+  when: docker_install_compose | bool

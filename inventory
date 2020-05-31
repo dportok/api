@@ -1,0 +1,2 @@
+[api]
+192.168.50.11 ansible_ssh_user=vagrant ansible_ssh_private_key_file=/Users/user/.vagrant.d/insecure_private_key

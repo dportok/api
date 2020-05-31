@@ -1,0 +1,8 @@
+- hosts: api
+  become: yes
+  roles:
+    - role: preflight
+    - role: aws_setup
+    - role: cron_setup
+    - role: docker_setup
+    - role: deploy_app

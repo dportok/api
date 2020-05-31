@@ -1,0 +1,43 @@
+---
+- name: Check if localrepo exists
+  stat:
+    path: "{{ local_repo_path }}"
+  register: local_repo
+
+- name: Create localrepo directory
+  file:
+    path: "{{ local_repo_path }}"
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+  when: not local_repo.stat.exists
+
+- name: Check if localrepo is cloned
+  stat:
+    path: "{{ local_repo_path }}/.git"
+  register: is_git
+
+- name: Clone the repository
+  git:
+    repo: "{{ remote_repository }}"
+    dest: "{{ local_repo_path }}"
+  when: not is_git.stat.exists
+
+- name: Copy script to remote host
+  template:
+    src: "pull_and_sync.sh.j2"
+    dest: "{{ script_path }}"
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Create cron job that runs the script daily
+  cron:
+    name: "pull and sync"
+    job: '/opt/pull_and_sync.sh'
+    minute: "0"
+    hour: "1"
+    day: "*"
+    month: "*"
+    weekday: "*"
